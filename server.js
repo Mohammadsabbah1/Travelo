@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const getCoordinates = require('./geonames');
 const getWeather = require('./weatherbit');
 const getImage = require('./pixabay');
-const getFlights = require('./amadeus');  // Import the Amadeus module
+const getFlights = require('./amadeus');  
 require('dotenv').config();
 
 const app = express();

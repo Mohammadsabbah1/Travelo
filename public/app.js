@@ -10,10 +10,9 @@ $(document).ready(function() {
     { id: 'FRA', text: 'Frankfurt, Germany' },
     { id: 'HND', text: 'Tokyo, Japan' },
     { id: 'SYD', text: 'Sydney, Australia' },
-    // Add more airports as needed
   ];
 
-  // Show/hide return date input based on trip type
+  
   $('input[name="trip-type"]').on('change', function() {
     if ($(this).val() === 'round-trip') {
       $('#return-date-container').show();
@@ -24,7 +23,6 @@ $(document).ready(function() {
     }
   });
 
-  // Suggestion logic for origin and destination
   function suggestAirports(inputId, suggestionsContainerId) {
     $(inputId).on('input', function() {
       const query = $(this).val().toLowerCase();
@@ -44,14 +42,12 @@ $(document).ready(function() {
   suggestAirports('#origin', '#origin-suggestions');
   suggestAirports('#destination', '#destination-suggestions');
 
-  // Hide suggestions when clicking outside
   $(document).on('click', function(event) {
     if (!$(event.target).closest('#origin, #destination, #origin-suggestions, #destination-suggestions').length) {
       $('#origin-suggestions, #destination-suggestions').hide();
     }
   });
 
-  // Form submission event handler
   $('#travel-form').on('submit', async function(event) {
     event.preventDefault();
 
@@ -66,7 +62,7 @@ $(document).ready(function() {
     loadingIndicator.show();
 
     try {
-      // Fetch coordinates
+
       const coordinatesRes = await fetch('/coordinates', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -76,7 +72,6 @@ $(document).ready(function() {
       const coordinates = await coordinatesRes.json();
       console.log('Coordinates:', coordinates);
 
-      // Fetch weather
       const weatherRes = await fetch('/weather', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -86,10 +81,10 @@ $(document).ready(function() {
       const weather = await weatherRes.json();
       console.log('Weather Response:', weather);
 
-      // Ensure weather data is correctly parsed
+
       const weatherDescription = weather.data[0]?.weather?.description || 'No weather data available';
 
-      // Fetch image
+
       const imageRes = await fetch('/image', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -100,7 +95,7 @@ $(document).ready(function() {
       const imageUrl = imageData.imageUrl;
       console.log('Image URL:', imageUrl);
 
-      // Fetch flights
+
       const flightsRes = await fetch('/flights', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -110,16 +105,13 @@ $(document).ready(function() {
       const flightsData = await flightsRes.json();
       console.log('Flights Data:', flightsData);
 
-      // Filter flights to match the specified origin and destination
       const filteredFlights = flightsData.data.filter(flight => {
         const segment = flight.itineraries[0].segments[0];
         return segment.departure.iataCode === origin && segment.arrival.iataCode === destination;
       });
 
-      // Format date for the booking URL
       const formattedDate = new Date(departDate).toISOString().split('T')[0];
 
-      // Display trip info
       const tripInfoDiv = $('#trip-info');
       tripInfoDiv.html(`
         <div class="mb-4">
@@ -138,7 +130,7 @@ $(document).ready(function() {
               const airlineCode = segment.carrierCode;
               const airlineName = flight.validatingAirlineCodes[0];
               const bookingUrl = `https://www.kayak.com/flights/${segment.departure.iataCode}-${segment.arrival.iataCode}/${formattedDate}`;
-              const airlineLogoUrl = `https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/${airlineCode}.svg`; // Replace with the correct Duffel logo URL structure
+              const airlineLogoUrl = `https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/${airlineCode}.svg`; 
               return `
                 <div class="p-4 border rounded-md shadow-md">
                   <div class="flex justify-between items-center">
