@@ -1,7 +1,7 @@
 const axios = require('axios');
 
 const getWeather = async (lat, lng, date) => {
-  const apiKey = 'cdb4bcdccffe4e19ae272a683e21ab20'; // Replace with your Weatherbit API key
+  const apiKey = process.env.WEATHERBIT_API_KEY;
   const currentUrl = `https://api.weatherbit.io/v2.0/current?lat=${lat}&lon=${lng}&key=${apiKey}`;
   const forecastUrl = `https://api.weatherbit.io/v2.0/forecast/daily?lat=${lat}&lon=${lng}&key=${apiKey}`;
   const now = new Date();

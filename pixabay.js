@@ -1,7 +1,7 @@
 const axios = require('axios');
 
 const getImage = async (location) => {
-  const apiKey = '44721862-205ee149d30ba027b33056d3c';
+  const apiKey = process.env.PIXABAY_API_KEY;
   const url = `https://pixabay.com/api/?key=${apiKey}&q=${encodeURIComponent(location)}&image_type=photo`;
 
   try {

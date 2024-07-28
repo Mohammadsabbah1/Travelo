@@ -10,7 +10,6 @@ require('dotenv').config();
 
 const app = express();
 //	
-const AVWX_API_KEY = 'LiskEOzRklnn2S-toqwGArxvaIF9wg4MhwrGPR_be5Y';
 
 app.use(express.static('public'));
 app.use(express.json());
