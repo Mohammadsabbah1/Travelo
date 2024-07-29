@@ -1,3 +1,4 @@
+
 $(document).ready(function() {
   const airports = [
     { id: 'AMM', text: 'Jordan' },
@@ -11,8 +12,9 @@ $(document).ready(function() {
     { id: 'HND', text: 'Tokyo, Japan' },
     { id: 'SYD', text: 'Sydney, Australia' },
   ];
+  console.log("Script loaded");
 
-  
+  // Show/hide return date based on trip type
   $('input[name="trip-type"]').on('change', function() {
     if ($(this).val() === 'round-trip') {
       $('#return-date-container').show();
@@ -23,6 +25,7 @@ $(document).ready(function() {
     }
   });
 
+  // Suggestion functionality
   function suggestAirports(inputId, suggestionsContainerId) {
     $(inputId).on('input', function() {
       const query = $(this).val().toLowerCase();
@@ -42,12 +45,14 @@ $(document).ready(function() {
   suggestAirports('#origin', '#origin-suggestions');
   suggestAirports('#destination', '#destination-suggestions');
 
+  // Hide suggestions when clicking outside
   $(document).on('click', function(event) {
     if (!$(event.target).closest('#origin, #destination, #origin-suggestions, #destination-suggestions').length) {
       $('#origin-suggestions, #destination-suggestions').hide();
     }
   });
 
+  // Form submission
   $('#travel-form').on('submit', async function(event) {
     event.preventDefault();
 
@@ -62,7 +67,7 @@ $(document).ready(function() {
     loadingIndicator.show();
 
     try {
-
+      // Fetch coordinates
       const coordinatesRes = await fetch('/coordinates', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -72,6 +77,7 @@ $(document).ready(function() {
       const coordinates = await coordinatesRes.json();
       console.log('Coordinates:', coordinates);
 
+      // Fetch weather
       const weatherRes = await fetch('/weather', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -81,10 +87,9 @@ $(document).ready(function() {
       const weather = await weatherRes.json();
       console.log('Weather Response:', weather);
 
-
       const weatherDescription = weather.data[0]?.weather?.description || 'No weather data available';
 
-
+      // Fetch image
       const imageRes = await fetch('/image', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -95,7 +100,7 @@ $(document).ready(function() {
       const imageUrl = imageData.imageUrl;
       console.log('Image URL:', imageUrl);
 
-
+      // Fetch flights
       const flightsRes = await fetch('/flights', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

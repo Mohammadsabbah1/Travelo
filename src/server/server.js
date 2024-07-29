@@ -1,25 +1,26 @@
-const axios = require('axios'); // Add this line to import axios
+const axios = require('axios'); // Import axios
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const getCoordinates = require('./geonames');
 const getWeather = require('./weatherbit');
 const getImage = require('./pixabay');
-const getFlights = require('./amadeus');  
+const getFlights = require('./amadeus');
 require('dotenv').config();
 
 const app = express();
-//	
 
-app.use(express.static('public'));
+// Serve static files from the client directory
+app.use(express.static(path.join(__dirname, '../client')));
 app.use(express.json());
 app.use(bodyParser.json());
 
-
+// Serve the main HTML file
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  res.sendFile(path.join(__dirname, '../client/views', 'index.html'));
 });
 
+// Endpoint to get coordinates based on location
 app.post('/coordinates', async (req, res) => {
   const { location } = req.body;
   try {
@@ -30,6 +31,7 @@ app.post('/coordinates', async (req, res) => {
   }
 });
 
+// Endpoint to get weather data based on coordinates and date
 app.post('/weather', async (req, res) => {
   const { lat, lng, date } = req.body;
   try {
@@ -40,6 +42,7 @@ app.post('/weather', async (req, res) => {
   }
 });
 
+// Endpoint to get an image URL based on location
 app.post('/image', async (req, res) => {
   const { location } = req.body;
   try {
@@ -50,9 +53,9 @@ app.post('/image', async (req, res) => {
   }
 });
 
+// Endpoint to get flight data based on origin, destination, and dates
 app.post('/flights', async (req, res) => {
   const { origin, destination, departDate, returnDate } = req.body;
-
   try {
     const flightsData = await getFlights(origin, destination, departDate, returnDate);
     res.json(flightsData);
@@ -62,12 +65,12 @@ app.post('/flights', async (req, res) => {
   }
 });
 
+// Endpoint to serve the airports JSON file
 app.get('/airports', (req, res) => {
-  res.sendFile(path.join(__dirname, 'airports.json'));
+  res.sendFile(path.join(__dirname, '../client/assets','airports.json'));
 });
 
-
-
+// Start the server
 app.listen(3000, () => {
   console.log('Server is running on port 3000');
 });
