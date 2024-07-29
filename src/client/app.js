@@ -2,7 +2,7 @@ $(document).ready(function() {
   const airports = [
     { id: 'AMM', text: 'Jordan' },
     { id: 'LAX', text: 'Los Angeles, United States' },
-    { id: 'JFK', text: 'New York, United States' },
+    { id: 'JFK', text: 'New York, usa' },
     { id: 'LHR', text: 'London, United Kingdom' },
     { id: 'NRT', text: 'Tokyo, Japan' },
     { id: 'CDG', text: 'Paris, France' },
