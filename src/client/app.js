@@ -1,4 +1,3 @@
-
 $(document).ready(function() {
   const airports = [
     { id: 'AMM', text: 'Jordan' },
@@ -11,7 +10,13 @@ $(document).ready(function() {
     { id: 'FRA', text: 'Frankfurt, Germany' },
     { id: 'HND', text: 'Tokyo, Japan' },
     { id: 'SYD', text: 'Sydney, Australia' },
+    { id: 'YYZ', text: 'Toronto, Canada' },
+    { id: 'YVR', text: 'Vancouver, Canada' },
+    { id: 'YUL', text: 'Montreal, Canada' },
+    { id: 'YYC', text: 'Calgary, Canada' },
+    { id: 'YOW', text: 'Ottawa, Canada' }
   ];
+
   console.log("Script loaded");
 
   // Show/hide return date based on trip type
@@ -87,7 +92,12 @@ $(document).ready(function() {
       const weather = await weatherRes.json();
       console.log('Weather Response:', weather);
 
-      const weatherDescription = weather.data[0]?.weather?.description || 'No weather data available';
+      let weatherDescription = 'No weather data available';
+      let temperature = 'N/A';
+      if (weather && weather.data && weather.data.length > 0) {
+        weatherDescription = weather.data[0].weather.description || weatherDescription;
+        temperature = weather.data[0].temp || temperature;
+      }
 
       // Fetch image
       const imageRes = await fetch('/image', {
@@ -122,6 +132,7 @@ $(document).ready(function() {
         <div class="mb-4">
           <h2 class="text-xl font-bold text-gray-800">Weather</h2>
           <p>${weatherDescription}</p>
+          <p>Temperature: ${temperature}°C</p>
         </div>
         <div class="mb-4">
           <h2 class="text-xl font-bold text-gray-800">Image</h2>
